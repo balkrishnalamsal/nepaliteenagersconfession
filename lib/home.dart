@@ -102,6 +102,57 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
 
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(     height: MediaQuery.of(context).size.height*0.04,
+                              width: MediaQuery.of(context).size.height*0.1,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(width: 0.1,color: Colors.grey)
+                              ),
+                              child: Icon(CupertinoIcons.hand_thumbsup),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height*0.04,
+                              width: MediaQuery.of(context).size.height*0.1,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(width: 0.1,color: Colors.grey)
+
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(CupertinoIcons.chat_bubble_2),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height*0.04,
+                              width: MediaQuery.of(context).size.height*0.1,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(width: 0.1,color: Colors.grey)
+                              ),
+                              child: Icon(Icons.share),
+                            ),
+                          ),
+                        )
+
+
+
                       ],
                     ),),
                 );

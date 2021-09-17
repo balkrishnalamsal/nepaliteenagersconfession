@@ -18,7 +18,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
     super.initState();
     slides.add(
       new Slide(
-        title: "Got anyting to confess ??",
+        title: "Got anything to confess ??",
         description:
         "Feel free to confess anything without showing your identity!",
         pathImage: "assets/giveone.png",
@@ -26,7 +26,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
     );
     slides.add(
       new Slide(
-        title: "No hate spech,bullying",
+        title: "No hate speech,bullying",
         description: "Make sure that everyone feels safe. Bulling of any kind isn't allowed and degrading comments about anything such as race,religion,culture,sexual orientation,gender or identity will not be tolorated!",
         pathImage: "assets/giveone.png",
       ),
