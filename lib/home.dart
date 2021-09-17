@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nepaliteenagersconfession/Createpost.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:nepaliteenagersconfession/confessionpost.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _HomePageState extends State<HomePage> {
 
 
   List<confession> datalist = [];
-
+  late Query ref;
 
 coming(){
   DatabaseReference reference = FirebaseDatabase.instance.reference().child("Confession");
@@ -137,7 +138,18 @@ coming(){
           SliverList(
             delegate: SliverChildBuilderDelegate(
                   (_, int index) {
-                return Padding(
+                return FirebaseAnimatedList(
+                query: FirebaseDatabase.instance
+                    .reference()
+        .child("Confession")
+        .orderByChild("Time")
+        .limitToLast(10),
+    itemBuilder: (BuildContext context,
+    DataSnapshot snapshot,
+    Animation<double> animation,
+    int index) {
+    Map value = snapshot.value;
+    return Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Container(
                     decoration: BoxDecoration(
@@ -187,7 +199,7 @@ coming(){
                            Align(
                                alignment: Alignment.topLeft,
                                child: Padding(
-                                 padding: const EdgeInsets.only(top:55,left: 120,bottom: 30),
+                                 padding: const EdgeInsets.only(top:55,left: 12,bottom: 30),
                                  child: Text(datalist[index].description),
                                )),
 
@@ -246,7 +258,11 @@ coming(){
                         ),
 
                       ],
-                    ),),
+                    ),
+                        ),
+
+                    );
+                 }
                 );
               },
               childCount: datalist.length,
