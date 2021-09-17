@@ -14,6 +14,40 @@ class _HomePageState extends State<HomePage> {
 
       drawer: Drawer(
         child: Container(
+          decoration: BoxDecoration(
+            color: Colors.deepOrange
+          ),
+         child: Column(
+           children: [
+             Padding(
+               padding: const EdgeInsets.only(top: 50),
+               child: Container(
+                 height: MediaQuery.of(context).size.height*0.15,
+                 width: MediaQuery.of(context).size.height*0.5,
+                 decoration: BoxDecoration(
+                     image: DecorationImage(
+                         image: AssetImage("assets/giveone.png")
+                     ),
+                     color: Colors.deepOrange,
+                     shape: BoxShape.circle
+                 ),
+               ),
+             ),
+
+           Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Row(mainAxisAlignment:MainAxisAlignment.center,
+            children: [
+              Text("Nepalese Teenagers Confession",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(Icons.share,color: Colors.white,),
+              )
+            ],
+          ),
+        ),
+           ],
+         ),
 
         ),
       ),

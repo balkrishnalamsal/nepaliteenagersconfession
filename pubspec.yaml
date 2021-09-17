@@ -33,6 +33,17 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   intro_slider: ^3.0.2
+  firebase: ^9.0.1
+  firebase_database: ^7.1.2
+  fluttertoast: ^8.0.7
+  shared_preferences: ^2.0.6
+  firebase_core: ^1.4.0
+  timeago: ^3.1.0
+  uuid: ^3.0.4
+  numberpicker: ^2.0.1
+  flutter_linkify: ^5.0.2
+  url_launcher: ^6.0.3
+  flutter_share: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
