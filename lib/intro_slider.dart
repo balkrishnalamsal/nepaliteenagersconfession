@@ -70,17 +70,14 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
               children: [
 
                 Container(
-                  padding: EdgeInsets.all(20),
+                  height: MediaQuery.of(context).size.height*0.2,
+                    width: MediaQuery.of(context).size.width*0.3,
                   decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/giveone.png")
+                    ),
                     shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                  child: Image.asset(
-                    currentSlide.pathImage!,
-                    fit: BoxFit.fitHeight,
-                    matchTextDirection: true,
-                    height: 80,
-                  ),
+                  )
                 ),
 
 
