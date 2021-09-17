@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
+import 'package:nepaliteenagersconfession/Createpost.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,7 +11,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+     floatingActionButton: GestureDetector(
+       onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>CreatePost()));
+       },
+       child: Container(decoration: BoxDecoration(
+         color: Colors.grey,
+         shape: BoxShape.circle
+       ),
+         height: MediaQuery.of(context).size.height*0.05,
+         width: MediaQuery.of(context).size.width*0.1,
+         child: Icon(CupertinoIcons.pencil_outline,color: Colors.white,),
+       ),
+     ),
       drawer: Drawer(
         child: Container(
           decoration: BoxDecoration(
