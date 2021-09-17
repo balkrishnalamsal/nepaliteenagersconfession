@@ -22,10 +22,33 @@ class _HomePageState extends State<HomePage> {
           //2
           SliverAppBar(
             backgroundColor: Colors.deepOrange,
-            expandedHeight: 100.0,
+            expandedHeight: 150.0,
             flexibleSpace: FlexibleSpaceBar(
-              background:Container(
-                child: Center(child: Text("Nepalese Teenagers Confession",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
+              background:SafeArea(
+                child: Container(
+                  child: Column(mainAxisAlignment: MainAxisAlignment.center,
+
+                    children: [
+                      Container(
+                          height: MediaQuery.of(context).size.height*0.1,
+                          width: MediaQuery.of(context).size.height*0.5,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/giveone.png")
+                            ),
+                              color: Colors.deepOrange,
+                              shape: BoxShape.circle
+                          ),
+                      ),
+
+
+                      Center(child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Nepalese Teenagers Confession",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                      )),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
@@ -66,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 10),
-                              child: Text("Nepali Teenagers Confession",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                              child: Text("Nepalese Teenagers Confession",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
                             ),
 
                           ],
