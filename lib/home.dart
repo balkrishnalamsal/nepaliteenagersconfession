@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nepaliteenagersconfession/Createpost.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:nepaliteenagersconfession/confessionpost.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,8 +10,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+  List<confession> datalist = [];
+
+
+coming(){
+  DatabaseReference reference = FirebaseDatabase.instance.reference().child("Confession");
+  reference.once().then((DataSnapshot snapshot) {
+    datalist.clear();
+    var keys = snapshot.value.keys;
+    var value = snapshot.value;
+    for (var key in keys) {
+      var data = confession(
+          value[key]["description"],
+          value[key]["Time"],
+          value[key]["post"]
+
+      );
+
+      datalist.add(data);
+    }
+    setState(() {});
+  });
+
+
+
+
+}
+
+
+
+
   @override
   Widget build(BuildContext context) {
+    coming();
     return Scaffold(
      floatingActionButton: GestureDetector(
        onTap: (){
@@ -116,94 +151,105 @@ class _HomePageState extends State<HomePage> {
 
                     ),
 
-                    height: MediaQuery.of(context).size.height*0.3,
                     width: MediaQuery.of(context).size.width*1,
-                    child: Stack(
+                    child: Column(
                       children: [
-                        Row(
+                        Stack(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 5,top: 5),
-                              child: Container(
-                                height: MediaQuery.of(context).size.height*0.05,
-                                  width: MediaQuery.of(context).size.height*0.05,
-                                  decoration: BoxDecoration(
-                                    color: Colors.deepOrange,
-                                    shape: BoxShape.circle
-                                  ),
-                                  child: Image(image: AssetImage("assets/giveone.png"))),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5,top: 5),
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height*0.05,
+                                      width: MediaQuery.of(context).size.height*0.05,
+                                      decoration: BoxDecoration(
+                                        color: Colors.deepOrange,
+                                        shape: BoxShape.circle
+                                      ),
+                                      child: Image(image: AssetImage("assets/giveone.png"))),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text("Nepalese Teenagers Confession",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                                ),
+
+                              ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: Text("Nepalese Teenagers Confession",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(CupertinoIcons.ellipsis),
+                              ),
                             ),
+
+                           Align(
+                               alignment: Alignment.topLeft,
+                               child: Padding(
+                                 padding: const EdgeInsets.only(top:55,left: 120,bottom: 30),
+                                 child: Text(datalist[index].description),
+                               )),
+
+
+
 
                           ],
                         ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(CupertinoIcons.ellipsis),
+
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Container(     height: MediaQuery.of(context).size.height*0.04,
+                                  width: MediaQuery.of(context).size.height*0.1,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 0.1,color: Colors.grey)
+                                  ),
+                                  child: Icon(CupertinoIcons.hand_thumbsup),
+                                ),
+                              ),
+
+                              Container(
+                                height: MediaQuery.of(context).size.height*0.04,
+                                width: MediaQuery.of(context).size.height*0.1,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(width: 0.1,color: Colors.grey)
+
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(CupertinoIcons.chat_bubble_2),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height*0.04,
+                                  width: MediaQuery.of(context).size.height*0.1,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(width: 0.1,color: Colors.grey)
+                                  ),
+                                  child: Icon(Icons.share),
+                                ),
+                              ),
+
+
+                            ],
                           ),
                         ),
-
-                        Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Container(     height: MediaQuery.of(context).size.height*0.04,
-                              width: MediaQuery.of(context).size.height*0.1,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(width: 0.1,color: Colors.grey)
-                              ),
-                              child: Icon(CupertinoIcons.hand_thumbsup),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height*0.04,
-                              width: MediaQuery.of(context).size.height*0.1,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(width: 0.1,color: Colors.grey)
-
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Icon(CupertinoIcons.chat_bubble_2),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height*0.04,
-                              width: MediaQuery.of(context).size.height*0.1,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(width: 0.1,color: Colors.grey)
-                              ),
-                              child: Icon(Icons.share),
-                            ),
-                          ),
-                        )
-
-
 
                       ],
                     ),),
                 );
               },
-              childCount: 20,
+              childCount: datalist.length,
             ),
           ),
         ],
