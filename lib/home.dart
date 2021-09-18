@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -236,26 +237,46 @@ class _HomePageState extends State<HomePage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                        child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.04,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.1,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
-                                                  width: 0.1,
-                                                  color: Colors.grey)),
-                                          child: Icon(
-                                              CupertinoIcons.hand_thumbsup),
+                                      GestureDetector(
+                                        onTap: (){
+
+                                          int value= snapshot.data!.docs[index]["like"];
+                                          value=value+1;
+
+
+                                          FirebaseFirestore.instance
+                                              .collection("Confession")
+                                              .doc(snapshot.data!.docs[index]["post"]).update(
+                                              {
+                                                "like":value,
+                                              });
+                                        },
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.04,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.1,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    width: 0.1,
+                                                    color: Colors.grey)),
+                                            child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                    CupertinoIcons.hand_thumbsup),
+                                                Text(snapshot.data!.docs[index]["like"].toString(),)
+                                              ],
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       Container(

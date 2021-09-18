@@ -233,42 +233,63 @@ class _AdminpanelState extends State<Adminpanel> {
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
+                                        child: GestureDetector(
+                                          onTap: (){
+                                            FirebaseFirestore.instance
+                                                .collection("Confession")
+                                                .doc(snapshot.data!.docs[index]["post"])
+                                                .update({
+                                              "status":"Approved"
+                                            });
+
+                                          },
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.04,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.1,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    width: 0.1,
+                                                    color: Colors.grey)),
+                                            child: Icon(
+                                                CupertinoIcons.hand_thumbsup),
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: (){
+
+                                          FirebaseFirestore.instance
+                                              .collection("Confession")
+                                              .doc(snapshot.data!.docs[index]["post"]).delete();
+
+                                          },
+
                                         child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.04,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.1,
+                                          height:
+                                              MediaQuery.of(context).size.height *
+                                                  0.04,
+                                          width:
+                                              MediaQuery.of(context).size.height *
+                                                  0.1,
                                           decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                               border: Border.all(
                                                   width: 0.1,
                                                   color: Colors.grey)),
-                                          child: Icon(
-                                              CupertinoIcons.hand_thumbsup),
-                                        ),
-                                      ),
-                                      Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.04,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.1,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: Border.all(
-                                                width: 0.1,
-                                                color: Colors.grey)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Icon(
-                                              CupertinoIcons.chat_bubble_2),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Icon(
+                                                CupertinoIcons.hand_thumbsdown),
+                                          ),
                                         ),
                                       ),
                                       Padding(

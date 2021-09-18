@@ -96,7 +96,7 @@ class _CreatePostState extends State<CreatePost> {
                                     "post": post,
                                     "status": "Pending",
                                     "Time": DateTime.now(),
-                                    "like":""
+                                    "like":0
 
                                   }).whenComplete(() {
                                     setState(() {
