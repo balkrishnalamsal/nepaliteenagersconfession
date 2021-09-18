@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "797439890426-iba03222chia3kg1o85olij5bj1tpkbq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nepaliteenagersconfession.nepaliteenagersconfession",
+            "certificate_hash": "3b1089468133df3bcbbe24d484714ecb6fa93d91"
+          }
+        },
+        {
           "client_id": "797439890426-5topbcsfsq5abap9mcc4nu0g3cuufadj.apps.googleusercontent.com",
           "client_type": 3
         }
