@@ -1,8 +1,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'dart:io';
 import 'package:uuid/uuid.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreatePost extends StatefulWidget {
   @override
@@ -80,10 +81,10 @@ class _CreatePostState extends State<CreatePost> {
                           color: Colors.black,
                           onPressed: ()async{
                             String post = Uuid().v4();
-                            await FirebaseDatabase.instance.reference().child("Confession").child(post).set({
+                               FirebaseFirestore.instance.collection("Confession").doc(post).set({
                               "description":squadcontroller!.text,
                               "post":post,
-                              "Time":ServerValue.timestamp,
+                              "Time":DateTime.now(),
                             }).whenComplete(()
                             {
                               squadcontroller!.clear();
