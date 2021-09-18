@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -97,6 +96,8 @@ class _CreatePostState extends State<CreatePost> {
                                     "post": post,
                                     "status": "Pending",
                                     "Time": DateTime.now(),
+                                    "like":""
+
                                   }).whenComplete(() {
                                     setState(() {
                                       Fluttertoast.showToast(msg: 'Successfully sent for approval',
