@@ -95,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData) {
                       return Container(
-                          decoration: BoxDecoration(color: Colors.black),
+                          decoration: BoxDecoration(color: Colors.white),
                           child: Center(
                               child: Container(
                             width: MediaQuery.of(context).size.width * 0.3,
