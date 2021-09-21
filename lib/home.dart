@@ -10,7 +10,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -37,8 +36,24 @@ class _HomePageState extends State<HomePage> {
     if (islogin) {}
   }
 
+  baby()async{
+    preferences = await SharedPreferences.getInstance();
+    String ui=Uuid().v4();
+ if(preferences.getString("uid")==null){
+   preferences.setString("uid",ui);
+
+ }
+
+
+
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
+    baby();
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(
@@ -74,7 +89,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               GestureDetector(
-                onDoubleTap: (){
+                onDoubleTap: () {
                   controlSignIN();
                 },
                 child: Padding(
@@ -150,6 +165,7 @@ class _HomePageState extends State<HomePage> {
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (BuildContext context, index) {
                         iteam = snapshot.data!.docs[index]['Time'];
+                        String cominguid =snapshot.data!.docs[index]["post"];
 
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 8),
@@ -238,18 +254,51 @@ class _HomePageState extends State<HomePage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       GestureDetector(
-                                        onTap: (){
+                                        onTap: () async {
+                                          preferences = await SharedPreferences.getInstance();
+                                          String? uiddd=  preferences.getString("uid");
+                                          final QuerySnapshot one =
+                                              await FirebaseFirestore.instance
+                                                  .collection("Like")
+                                                  .where("Like",
+                                                  isEqualTo: "True").where("postid",isEqualTo:cominguid,)
+                                                   .where("uid",isEqualTo:uiddd)
+                                                  .get();
 
-                                          int value= snapshot.data!.docs[index]["like"];
-                                          value=value+1;
+                                          final List<DocumentSnapshot>
+                                              documentsnapshot = one.docs;
+                                          if (documentsnapshot.length == 0) {
+                                            FirebaseFirestore.instance
+                                                .collection("Like")
+                                                .doc(snapshot.data!.docs[index]["post"])
+                                                .set({
+                                              "uid":uiddd,
+                                              "Like": "True",
+                                              "postid":cominguid
+                                            }).whenComplete(() {
+                                              int value = snapshot
+                                                  .data!.docs[index]["like"];
+                                              value = value + 1;
+
+                                              FirebaseFirestore.instance
+                                                  .collection("Confession")
+                                                  .doc(snapshot.data!
+                                                      .docs[index]["post"])
+                                                  .update({"like": value});
+                                            });
 
 
-                                          FirebaseFirestore.instance
-                                              .collection("Confession")
-                                              .doc(snapshot.data!.docs[index]["post"]).update(
-                                              {
-                                                "like":value,
-                                              });
+                                          }else
+                                            {
+                                              Fluttertoast.showToast(
+                                                msg: 'You already like this post',
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                backgroundColor: Colors.orange,
+                                                textColor: Colors.black,
+                                              );
+                                              
+                                            }
                                         },
                                         child: Padding(
                                           padding:
@@ -269,11 +318,19 @@ class _HomePageState extends State<HomePage> {
                                                 border: Border.all(
                                                     width: 0.1,
                                                     color: Colors.grey)),
-                                            child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
-                                                Icon(
-                                                    CupertinoIcons.hand_thumbsup),
-                                                Text(snapshot.data!.docs[index]["like"].toString(),)
+
+
+                                                Icon(CupertinoIcons
+                                                    .hand_thumbsup,),
+                                                Text(
+                                                  snapshot
+                                                      .data!.docs[index]["like"]
+                                                      .toString(),
+                                                )
                                               ],
                                             ),
                                           ),
