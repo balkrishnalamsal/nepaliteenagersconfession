@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:device_info/device_info.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late FirebaseAuth currentuser;
   late SharedPreferences preferences;
+  var deviceInfo = DeviceInfoPlugin();
 
   bool islogin = false;
   bool isloading = false;
@@ -36,24 +37,10 @@ class _HomePageState extends State<HomePage> {
     if (islogin) {}
   }
 
-  baby()async{
-    preferences = await SharedPreferences.getInstance();
-    String ui=Uuid().v4();
- if(preferences.getString("uid")==null){
-   preferences.setString("uid",ui);
-
- }
-
-
-
-  }
-
-
 
 
   @override
   Widget build(BuildContext context) {
-    baby();
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(
@@ -255,8 +242,8 @@ class _HomePageState extends State<HomePage> {
                                     children: [
                                       GestureDetector(
                                         onTap: () async {
-                                          preferences = await SharedPreferences.getInstance();
-                                          String? uiddd=  preferences.getString("uid");
+                                          var androidDeviceInfo = await deviceInfo.androidInfo;
+                                          String uiddd = androidDeviceInfo.androidId;
                                           final QuerySnapshot one =
                                               await FirebaseFirestore.instance
                                                   .collection("Like")
@@ -293,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                                               Fluttertoast.showToast(
                                                 msg: 'You already like this post',
                                                 toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
+                                                gravity: ToastGravity.TOP,
                                                 backgroundColor: Colors.orange,
                                                 textColor: Colors.black,
                                               );
