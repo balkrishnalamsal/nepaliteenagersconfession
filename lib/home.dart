@@ -314,11 +314,14 @@ class _HomePageState extends State<HomePage> {
 
 
                                                 Icon(CupertinoIcons
-                                                    .hand_thumbsup,),
-                                                Text(
-                                                  snapshot
-                                                      .data!.docs[index]["like"]
-                                                      .toString(),
+                                                    .hand_thumbsup,size: 20,),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 4,left: 2),
+                                                  child: Text(
+                                                    snapshot
+                                                        .data!.docs[index]["like"]
+                                                        .toString(),
+                                                  ),
                                                 )
                                               ],
                                             ),
