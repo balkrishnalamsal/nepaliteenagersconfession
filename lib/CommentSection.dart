@@ -19,6 +19,7 @@ class _CommentAppState extends State<CommentApp> {
   _CommentAppState(this.postd);
   Timestamp? iteam;
   int?like;
+  late TextEditingController comment;
   String? description;
   String? status;
 
@@ -48,21 +49,47 @@ class _CommentAppState extends State<CommentApp> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    comment = TextEditingController();
+  }
+
+  @override
   Widget build(BuildContext context) {
     calling();
     return Scaffold(
-      floatingActionButton: GestureDetector(
-        onTap: () {
-        },
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: CupertinoTextField(
-            placeholder: "Write a comment",
-              placeholderStyle: TextStyle(color: Colors.grey),
-            ),
-          )
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(left: 25),
+        child: CupertinoTextField(decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(width: 0.1,color: Colors.black)
 
+        ),
+        placeholder: "Write a comment",
+          placeholderStyle: TextStyle(color: Colors.grey),
+          controller: comment,
+          cursorColor: Colors.black,
+          style: TextStyle(color: Colors.black),
+          suffix: Padding(
+            padding: const EdgeInsets.only(left: 8.0,right: 8),
+            child: ElevatedButton(
+
+              onPressed: () {
+                FirebaseFirestore.instance
+                    .collection("Comment")
+                    .doc()
+                    .set({
+                  "description":comment.text,
+                  "post": postd,
+                  "Time": DateTime.now(),
+                });
+
+
+
+
+              },
+            child: Text("Post"),),
+          ),
         ),
       ),
 
@@ -457,17 +484,6 @@ class _CommentAppState extends State<CommentApp> {
                     );
                   }),
             ),
-
-
-
-
-
-
-
-
-
-
-
           ]
         ),
     );
