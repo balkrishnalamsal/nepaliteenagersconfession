@@ -1,6 +1,9 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nepaliteenagersconfession/AdminPanel.dart';
+import 'package:nepaliteenagersconfession/CommentSection.dart';
 import 'package:nepaliteenagersconfession/Createpost.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -19,7 +22,6 @@ class _HomePageState extends State<HomePage> {
   Timestamp? iteam;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
   late FirebaseAuth currentuser;
   late SharedPreferences preferences;
   var deviceInfo = DeviceInfoPlugin();
@@ -323,23 +325,29 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                       ),
-                                      Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.04,
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.1,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: Border.all(
-                                                width: 0.1,
-                                                color: Colors.grey)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Icon(
-                                              CupertinoIcons.chat_bubble_2),
+                                      GestureDetector(
+                                        onTap: (){
+                                          Navigator.push(context,MaterialPageRoute(builder: (context)=>CommentApp(postd:snapshot.data!.docs[index]["post"])));
+
+                                        },
+                                        child: Container(
+                                          height:
+                                              MediaQuery.of(context).size.height *
+                                                  0.04,
+                                          width:
+                                              MediaQuery.of(context).size.height *
+                                                  0.1,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(
+                                                  width: 0.1,
+                                                  color: Colors.grey)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Icon(
+                                                CupertinoIcons.chat_bubble_2),
+                                          ),
                                         ),
                                       ),
                                       Padding(
