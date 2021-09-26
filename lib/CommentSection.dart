@@ -61,6 +61,7 @@ class _CommentAppState extends State<CommentApp> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(left: 25),
         child: CupertinoTextField(decoration: BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(width: 0.1,color: Colors.black)
 
@@ -73,7 +74,11 @@ class _CommentAppState extends State<CommentApp> {
           suffix: Padding(
             padding: const EdgeInsets.only(left: 8.0,right: 8),
             child: ElevatedButton(
-
+               style: ElevatedButton.styleFrom(
+                 shape: RoundedRectangleBorder(
+                   borderRadius: BorderRadius.circular(10)
+                 )
+               ),
               onPressed: () {
                 FirebaseFirestore.instance
                     .collection("Comment")
@@ -88,7 +93,7 @@ class _CommentAppState extends State<CommentApp> {
 
 
               },
-            child: Text("Post"),),
+            child: Text("POST"),),
           ),
         ),
       ),
@@ -380,99 +385,6 @@ class _CommentAppState extends State<CommentApp> {
                                           ),
                                         ),
                                       ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                            child: Container(
-                                              height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                                  0.04,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                                  0.1,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                      width: 0.1,
-                                                      color: Colors.grey)),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                                children: [
-
-
-                                                  Icon(CupertinoIcons
-                                                      .hand_thumbsup,size: 20,),
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(top: 4,left: 2),
-                                                    child: Text(
-                                                      snapshot
-                                                          .data!.docs[index]["like"]
-                                                          .toString(),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: (){
-                                              Navigator.push(context,MaterialPageRoute(builder: (context)=>CommentApp(postd:snapshot.data!.docs[index]["post"])));
-
-                                            },
-                                            child: Container(
-                                              height:
-                                              MediaQuery.of(context).size.height *
-                                                  0.04,
-                                              width:
-                                              MediaQuery.of(context).size.height *
-                                                  0.1,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                      width: 0.1,
-                                                      color: Colors.grey)),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Icon(
-                                                    CupertinoIcons.chat_bubble_2),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.only(right: 8.0),
-                                            child: Container(
-                                              height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                                  0.04,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                                  0.1,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                  BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                      width: 0.1,
-                                                      color: Colors.grey)),
-                                              child: Icon(Icons.share),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
                                     ),
                                   ],
                                 ),
