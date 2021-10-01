@@ -3,7 +3,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nepaliteenagersconfession/AdminPanel.dart';
-import 'package:nepaliteenagersconfession/CommentSection.dart';
 import 'package:nepaliteenagersconfession/Createpost.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -329,27 +328,88 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: (){
-                                          Navigator.push(context,MaterialPageRoute(builder: (context)=>CommentApp(postd:snapshot.data!.docs[index]["post"])));
+                                        onTap: () async {
+                                          var androidDeviceInfo = await deviceInfo.androidInfo;
+                                          String uiddd = androidDeviceInfo.androidId;
+                                          final QuerySnapshot one =
+                                          await FirebaseFirestore.instance
+                                              .collection("dislike")
+                                              .where("dislike",
+                                              isEqualTo: "True").where("postid",isEqualTo:cominguid,)
+                                              .where("uid",isEqualTo:uiddd)
+                                              .get();
 
+                                          final List<DocumentSnapshot>
+                                          documentsnapshot = one.docs;
+                                          if (documentsnapshot.length == 0) {
+                                            FirebaseFirestore.instance
+                                                .collection("dislike")
+                                                .doc(snapshot.data!.docs[index]["post"])
+                                                .set({
+                                              "uid":uiddd,
+                                              "dislike": "True",
+                                              "postid":cominguid
+                                            }).whenComplete(() {
+                                              int value = snapshot
+                                                  .data!.docs[index]["dislike"];
+                                              value = value + 1;
+
+                                              FirebaseFirestore.instance
+                                                  .collection("Confession")
+                                                  .doc(snapshot.data!
+                                                  .docs[index]["post"])
+                                                  .update({"dislike": value});
+                                            });
+
+
+                                          }else
+                                          {
+                                            Fluttertoast.showToast(
+                                              msg: 'You already dislike this post',
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.TOP,
+                                              backgroundColor: Colors.orange,
+                                              textColor: Colors.black,
+                                            );
+
+                                          }
                                         },
-                                        child: Container(
-                                          height:
-                                              MediaQuery.of(context).size.height *
-                                                  0.04,
-                                          width:
-                                              MediaQuery.of(context).size.height *
-                                                  0.1,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
-                                                  width: 0.1,
-                                                  color: Colors.grey)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Icon(
-                                                CupertinoIcons.chat_bubble_2),
+                                        child: Padding(
+                                          padding:
+                                          const EdgeInsets.only(left: 8.0),
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                                0.04,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                                0.1,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    width: 0.1,
+                                                    color: Colors.grey)),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children: [
+
+
+                                                Icon(CupertinoIcons
+                                                    .hand_thumbsdown,size: 20,),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left: 3),
+                                                  child: Text(
+                                                    snapshot
+                                                        .data!.docs[index]["dislike"]
+                                                        .toString(),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
