@@ -3,7 +3,6 @@ import 'home.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/slide_object.dart';
-
 class IntroSliderPage extends StatefulWidget {
   @override
   _IntroSliderPageState createState() => _IntroSliderPageState();
@@ -117,6 +116,9 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
     }
     return tabs;
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {

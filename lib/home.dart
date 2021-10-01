@@ -52,14 +52,19 @@ class _HomePageState extends State<HomePage> {
 
 
 
+shared()async{
+  preferences = await SharedPreferences.getInstance();
 
+  setState(() {
+    preferences.setString("intro", "True");
+  });
 
-
-
+}
 
 
   @override
   Widget build(BuildContext context) {
+    shared();
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(
