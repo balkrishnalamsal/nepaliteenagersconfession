@@ -12,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:device_info/device_info.dart';
+import 'package:flutter_share/flutter_share.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   late FirebaseAuth currentuser;
   late SharedPreferences preferences;
   var deviceInfo = DeviceInfoPlugin();
+  String ? sharetext;
 
   bool islogin = false;
   bool isloading = false;
@@ -37,6 +39,22 @@ class _HomePageState extends State<HomePage> {
     islogin = await googleSignIn.isSignedIn();
     if (islogin) {}
   }
+
+
+  Future<void> share() async {
+    await FlutterShare.share(
+        title: 'Nepalese Teenagers confession',
+        text: '$sharetext' ,
+        chooserTitle: 'Nepalese Teenagers confession'
+    );
+  }
+
+
+
+
+
+
+
 
 
 
@@ -93,26 +111,26 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Nepalese Teenagers Confession",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.share,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                ),
-              ),
+               Padding(
+                 padding: const EdgeInsets.only(top: 15.0),
+                 child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [
+                     Text(
+                       "Nepalese Teenagers Confession",
+                       style: TextStyle(
+                           color: Colors.white, fontWeight: FontWeight.bold),
+                     ),
+                     Padding(
+                       padding: const EdgeInsets.all(8.0),
+                       child: Icon(
+                         Icons.share,
+                         color: Colors.white,
+                       ),
+                     )
+                   ],
+                 ),
+               ),
             ],
           ),
         ),
@@ -413,25 +431,31 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8.0),
-                                        child: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.04,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.1,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
-                                                  width: 0.1,
-                                                  color: Colors.grey)),
-                                          child: Icon(Icons.share),
+                                      GestureDetector(
+                                         onTap: (){
+                                           share();
+                                             sharetext=snapshot.data!.docs[index]["description"];
+                                         },
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 8.0),
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.04,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.1,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                border: Border.all(
+                                                    width: 0.1,
+                                                    color: Colors.grey)),
+                                            child: Icon(Icons.share),
+                                          ),
                                         ),
                                       ),
                                     ],
