@@ -3,6 +3,7 @@ import 'home.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/dot_animation_enum.dart';
 import 'package:intro_slider/slide_object.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class IntroSliderPage extends StatefulWidget {
   @override
   _IntroSliderPageState createState() => _IntroSliderPageState();
@@ -11,9 +12,24 @@ class IntroSliderPage extends StatefulWidget {
 class _IntroSliderPageState extends State<IntroSliderPage> {
   List<Slide> slides = [];
 
+
+  late SharedPreferences preferences;
+  String ? value;
+
+  shared()async{
+    preferences =await SharedPreferences.getInstance();
+    value= preferences.getString("intro");
+    if(value=="True"){
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+    }
+
+
+  }
+
+
   @override
   void initState() {
-    // TODO: implement initState
+   shared();
     super.initState();
     slides.add(
       new Slide(
@@ -26,7 +42,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
     slides.add(
       new Slide(
         title: "No hate speech,bullying",
-        description: "Make sure that everyone feels safe. Bulling of any kind isn't allowed and degrading comments about anything such as race,religion,culture,sexual orientation,gender or identity will not be tolorated!",
+        description: "Make sure that everyone feels safe. Bulling of any kind isn't allowed and degrading comments about anything such as race,religion,culture,sexual orientation,gender or identity will not be tolerate!",
         pathImage: "assets/giveone.png",
       ),
     );
@@ -140,7 +156,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
       listCustomTabs: this.renderListCustomTabs(),
       scrollPhysics: BouncingScrollPhysics(),
       hideStatusBar: false,
-      onDonePress: () => Navigator.pushReplacement(
+      onDonePress: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => HomePage(),

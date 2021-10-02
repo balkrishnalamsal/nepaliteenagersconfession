@@ -14,30 +14,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late SharedPreferences preferences;
-
-  shared()async{
-    preferences =await SharedPreferences.getInstance();
-    String? value;
-    value= preferences.getString("intro");
-
-    debugPrint(value);
-    if(value=="True"){
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage(),
-        ),
-      );
-
-    }
-
-
-  }
 
   @override
   void initState() {
-    shared();
     super.initState();
 
   }

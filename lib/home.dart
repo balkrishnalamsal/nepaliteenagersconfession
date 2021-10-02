@@ -1,7 +1,7 @@
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nepaliteenagersconfession/AdminPanel.dart';
 import 'package:nepaliteenagersconfession/Createpost.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,11 +42,24 @@ class _HomePageState extends State<HomePage> {
 
 
   Future<void> share() async {
-    await FlutterShare.share(
-        title: 'Nepalese Teenagers confession',
-        text: '$sharetext' ,
-        chooserTitle: 'Nepalese Teenagers confession'
-    );
+    if(sharetext==null){
+      Fluttertoast.showToast(
+        msg: 'Try again',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.orange,
+        textColor: Colors.black,
+      );
+
+    }else{
+      await FlutterShare.share(
+          title: 'Nepalese Teenagers confession',
+          text: '$sharetext' ,
+          chooserTitle: 'Nepalese Teenagers confession'
+      );
+
+    }
+
   }
 
 
@@ -65,416 +78,425 @@ shared()async{
   @override
   Widget build(BuildContext context) {
     shared();
-    return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(20),
+    return WillPopScope(
+      onWillPop: (()=>SystemNavigator.pop().then((value) => value as bool)),
+      child: Scaffold(
+        appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(35),
+            ),
+          ),
+          title: Text(
+            "Nepalese Teenagers Confession",
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          backgroundColor: Colors.red,
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        floatingActionButton: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CreatePost()));
+          },
+          child: Container(
+            decoration: BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+            height: MediaQuery.of(context).size.height * 0.05,
+            width: MediaQuery.of(context).size.width * 0.1,
+            child: Icon(
+              CupertinoIcons.pencil_outline,
+              color: Colors.white,
+            ),
           ),
         ),
-        title: Text(
-          "Nepalese Teenagers Confession",
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
-        ),
-        backgroundColor: Colors.deepOrangeAccent,
-      ),
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CreatePost()));
-        },
-        child: Container(
-          decoration: BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-          height: MediaQuery.of(context).size.height * 0.05,
-          width: MediaQuery.of(context).size.width * 0.1,
-          child: Icon(
-            CupertinoIcons.pencil_outline,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      drawer: Drawer(
-        child: Container(
-          decoration: BoxDecoration(color: Colors.deepOrangeAccent),
-          child: Column(
-            children: [
-              GestureDetector(
-                onDoubleTap: () {
-                  controlSignIN();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    width: MediaQuery.of(context).size.height * 0.5,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/giveone.png")),
-                        color: Colors.deepOrange,
-                        shape: BoxShape.circle),
+        drawer: Drawer(
+          child: Container(
+            decoration: BoxDecoration(color: Colors.deepOrangeAccent),
+            child: Column(
+              children: [
+                GestureDetector(
+                  onDoubleTap: () {
+                    controlSignIN();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      width: MediaQuery.of(context).size.height * 0.5,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/giveone.png")),
+                          color: Colors.deepOrange,
+                          shape: BoxShape.circle),
+                    ),
                   ),
                 ),
-              ),
-               Padding(
-                 padding: const EdgeInsets.only(top: 15.0),
-                 child: Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: [
-                     Text(
-                       "Nepalese Teenagers Confession",
-                       style: TextStyle(
-                           color: Colors.white, fontWeight: FontWeight.bold),
-                     ),
-                     Padding(
-                       padding: const EdgeInsets.all(8.0),
-                       child: Icon(
-                         Icons.share,
-                         color: Colors.white,
+                 Padding(
+                   padding: const EdgeInsets.only(top: 15.0),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       Text(
+                         "Nepalese Teenagers Confession",
+                         style: TextStyle(
+                             color: Colors.white, fontWeight: FontWeight.bold),
                        ),
-                     )
-                   ],
+                       // GestureDetector(
+                       //   onTap: (){
+                       //
+                       //   },
+                       //   child: Padding(
+                       //     padding: const EdgeInsets.all(8.0),
+                       //     child: Icon(
+                       //       Icons.share,
+                       //       color: Colors.white,
+                       //     ),
+                       //   ),
+                       // )
+                     ],
+                   ),
                  ),
-               ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-      body: SafeArea(
-        child: Container(
-          child: StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection("Confession")
-                  .orderBy("Time", descending: true)
-                  .where("status", isEqualTo: "Approved")
-                  .snapshots()
-                  .asBroadcastStream(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData) {
-                  return Container(
-                      decoration: BoxDecoration(color: Colors.white),
-                      child: Center(
-                          child: Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: LinearProgressIndicator(
-                            valueColor:
-                                new AlwaysStoppedAnimation<Color>(Colors.blue),
-                            backgroundColor: Colors.deepOrangeAccent,
+        body: SafeArea(
+          child: Container(
+            child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("Confession")
+                    .orderBy("Time", descending: true)
+                    .where("status", isEqualTo: "Approved")
+                    .snapshots()
+                    .asBroadcastStream(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Container(
+                        decoration: BoxDecoration(color: Colors.white),
+                        child: Center(
+                            child: Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: LinearProgressIndicator(
+                              valueColor:
+                                  new AlwaysStoppedAnimation<Color>(Colors.blue),
+                              backgroundColor: Colors.deepOrangeAccent,
+                            ),
                           ),
-                        ),
-                      )));
-                }
-                return Container(
-                  decoration: BoxDecoration(color: Colors.white),
-                  child: SafeArea(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (BuildContext context, index) {
-                        iteam = snapshot.data!.docs[index]['Time'];
-                        String cominguid =snapshot.data!.docs[index]["post"];
+                        )));
+                  }
+                  return Container(
+                    decoration: BoxDecoration(color: Colors.white),
+                    child: SafeArea(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (BuildContext context, index) {
+                          iteam = snapshot.data!.docs[index]['Time'];
+                          String cominguid =snapshot.data!.docs[index]["post"];
 
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Container(
-                            decoration:
-                                BoxDecoration(color: Colors.white, boxShadow: [
-                              BoxShadow(
-                                  offset: (Offset(
-                                    0,
-                                    5,
-                                  )),
-                                  color: Colors.grey)
-                            ]),
-                            width: MediaQuery.of(context).size.width * 1,
-                            child: Column(
-                              children: [
-                                Stack(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, top: 5),
-                                          child: Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.05,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.05,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.deepOrange,
-                                                  shape: BoxShape.circle),
-                                              child: Image(
-                                                  image: AssetImage(
-                                                      "assets/giveone.png"))),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            "Nepalese Teenagers Confession",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold),
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Container(
+                              decoration:
+                                  BoxDecoration(color: Colors.white, boxShadow: [
+                                BoxShadow(
+                                    offset: (Offset(
+                                      0,
+                                      5,
+                                    )),
+                                    color: Colors.grey)
+                              ]),
+                              width: MediaQuery.of(context).size.width * 1,
+                              child: Column(
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 5, top: 5),
+                                            child: Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.05,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .height *
+                                                    0.05,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.deepOrange,
+                                                    shape: BoxShape.circle),
+                                                child: Image(
+                                                    image: AssetImage(
+                                                        "assets/giveone.png"))),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Icon(CupertinoIcons.ellipsis),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            child: Text(
+                                              "Nepalese Teenagers Confession",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Align(
+                                      // Align(
+                                      //   alignment: Alignment.topRight,
+                                      //   child: Padding(
+                                      //     padding: const EdgeInsets.all(8.0),
+                                      //     child: Icon(CupertinoIcons.ellipsis),
+                                      //   ),
+                                      // ),
+                                      Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 55, left: 12, bottom: 30),
+                                            child: Text(snapshot.data!.docs[index]
+                                                ["description"]),
+                                          )),
+                                      Align(
                                         alignment: Alignment.topLeft,
                                         child: Padding(
                                           padding: const EdgeInsets.only(
-                                              top: 55, left: 12, bottom: 30),
-                                          child: Text(snapshot.data!.docs[index]
-                                              ["description"]),
-                                        )),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 35, left: 58),
-                                        child: Text(
-                                          timeago.format(iteam!.toDate()),
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              color: Colors.grey, fontSize: 10),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () async {
-                                          var androidDeviceInfo = await deviceInfo.androidInfo;
-                                          String uiddd = androidDeviceInfo.androidId;
-                                          final QuerySnapshot one =
-                                              await FirebaseFirestore.instance
-                                                  .collection("Like")
-                                                  .where("Like",
-                                                  isEqualTo: "True").where("postid",isEqualTo:cominguid,)
-                                                   .where("uid",isEqualTo:uiddd)
-                                                  .get();
-
-                                          final List<DocumentSnapshot>
-                                              documentsnapshot = one.docs;
-                                          if (documentsnapshot.length == 0) {
-                                            FirebaseFirestore.instance
-                                                .collection("Like")
-                                                .doc(snapshot.data!.docs[index]["post"])
-                                                .set({
-                                              "uid":uiddd,
-                                              "Like": "True",
-                                              "postid":cominguid
-                                            }).whenComplete(() {
-                                              int value = snapshot
-                                                  .data!.docs[index]["like"];
-                                              value = value + 1;
-
-                                              FirebaseFirestore.instance
-                                                  .collection("Confession")
-                                                  .doc(snapshot.data!
-                                                      .docs[index]["post"])
-                                                  .update({"like": value});
-                                            });
-
-
-                                          }else
-                                            {
-                                              Fluttertoast.showToast(
-                                                msg: 'You already like this post',
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.TOP,
-                                                backgroundColor: Colors.orange,
-                                                textColor: Colors.black,
-                                              );
-                                              
-                                            }
-                                        },
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.04,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.1,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    width: 0.1,
-                                                    color: Colors.grey)),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-
-
-                                                Icon(CupertinoIcons
-                                                    .hand_thumbsup,size: 20,),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(top: 4,left: 2),
-                                                  child: Text(
-                                                    snapshot
-                                                        .data!.docs[index]["like"]
-                                                        .toString(),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          var androidDeviceInfo = await deviceInfo.androidInfo;
-                                          String uiddd = androidDeviceInfo.androidId;
-                                          final QuerySnapshot one =
-                                          await FirebaseFirestore.instance
-                                              .collection("dislike")
-                                              .where("dislike",
-                                              isEqualTo: "True").where("postid",isEqualTo:cominguid,)
-                                              .where("uid",isEqualTo:uiddd)
-                                              .get();
-
-                                          final List<DocumentSnapshot>
-                                          documentsnapshot = one.docs;
-                                          if (documentsnapshot.length == 0) {
-                                            FirebaseFirestore.instance
-                                                .collection("dislike")
-                                                .doc(snapshot.data!.docs[index]["post"])
-                                                .set({
-                                              "uid":uiddd,
-                                              "dislike": "True",
-                                              "postid":cominguid
-                                            }).whenComplete(() {
-                                              int value = snapshot
-                                                  .data!.docs[index]["dislike"];
-                                              value = value + 1;
-
-                                              FirebaseFirestore.instance
-                                                  .collection("Confession")
-                                                  .doc(snapshot.data!
-                                                  .docs[index]["post"])
-                                                  .update({"dislike": value});
-                                            });
-
-
-                                          }else
-                                          {
-                                            Fluttertoast.showToast(
-                                              msg: 'You already dislike this post',
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.TOP,
-                                              backgroundColor: Colors.orange,
-                                              textColor: Colors.black,
-                                            );
-
-                                          }
-                                        },
-                                        child: Padding(
-                                          padding:
-                                          const EdgeInsets.only(left: 8.0),
-                                          child: Container(
-                                            height: MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                                0.04,
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .height *
-                                                0.1,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    width: 0.1,
-                                                    color: Colors.grey)),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                              children: [
-
-
-                                                Icon(CupertinoIcons
-                                                    .hand_thumbsdown,size: 20,),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(left: 3),
-                                                  child: Text(
-                                                    snapshot
-                                                        .data!.docs[index]["dislike"]
-                                                        .toString(),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                         onTap: (){
-                                           share();
-                                             sharetext=snapshot.data!.docs[index]["description"];
-                                         },
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8.0),
-                                          child: Container(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.04,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.1,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                border: Border.all(
-                                                    width: 0.1,
-                                                    color: Colors.grey)),
-                                            child: Icon(Icons.share),
+                                              top: 35, left: 58),
+                                          child: Text(
+                                            timeago.format(iteam!.toDate()),
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                color: Colors.grey, fontSize: 10),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            var androidDeviceInfo = await deviceInfo.androidInfo;
+                                            String uiddd = androidDeviceInfo.androidId;
+                                            final QuerySnapshot one =
+                                                await FirebaseFirestore.instance
+                                                    .collection("Like")
+                                                    .where("Like",
+                                                    isEqualTo: "True").where("postid",isEqualTo:cominguid,)
+                                                     .where("uid",isEqualTo:uiddd)
+                                                    .get();
+
+                                            final List<DocumentSnapshot>
+                                                documentsnapshot = one.docs;
+                                            if (documentsnapshot.length == 0) {
+                                              FirebaseFirestore.instance
+                                                  .collection("Like")
+                                                  .doc(snapshot.data!.docs[index]["post"])
+                                                  .set({
+                                                "uid":uiddd,
+                                                "Like": "True",
+                                                "postid":cominguid
+                                              }).whenComplete(() {
+                                                int value = snapshot
+                                                    .data!.docs[index]["like"];
+                                                value = value + 1;
+
+                                                FirebaseFirestore.instance
+                                                    .collection("Confession")
+                                                    .doc(snapshot.data!
+                                                        .docs[index]["post"])
+                                                    .update({"like": value});
+                                              });
+
+
+                                            }else
+                                              {
+                                                Fluttertoast.showToast(
+                                                  msg: 'You already like this post',
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.TOP,
+                                                  backgroundColor: Colors.orange,
+                                                  textColor: Colors.black,
+                                                );
+
+                                              }
+                                          },
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 8.0),
+                                            child: Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.04,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.1,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                      width: 0.1,
+                                                      color: Colors.grey)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+
+
+                                                  Icon(CupertinoIcons
+                                                      .hand_thumbsup,size: 20,),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(top: 4,left: 2),
+                                                    child: Text(
+                                                      snapshot
+                                                          .data!.docs[index]["like"]
+                                                          .toString(),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            var androidDeviceInfo = await deviceInfo.androidInfo;
+                                            String uiddd = androidDeviceInfo.androidId;
+                                            final QuerySnapshot one =
+                                            await FirebaseFirestore.instance
+                                                .collection("dislike")
+                                                .where("dislike",
+                                                isEqualTo: "True").where("postid",isEqualTo:cominguid,)
+                                                .where("uid",isEqualTo:uiddd)
+                                                .get();
+
+                                            final List<DocumentSnapshot>
+                                            documentsnapshot = one.docs;
+                                            if (documentsnapshot.length == 0) {
+                                              FirebaseFirestore.instance
+                                                  .collection("dislike")
+                                                  .doc(snapshot.data!.docs[index]["post"])
+                                                  .set({
+                                                "uid":uiddd,
+                                                "dislike": "True",
+                                                "postid":cominguid
+                                              }).whenComplete(() {
+                                                int value = snapshot
+                                                    .data!.docs[index]["dislike"];
+                                                value = value + 1;
+
+                                                FirebaseFirestore.instance
+                                                    .collection("Confession")
+                                                    .doc(snapshot.data!
+                                                    .docs[index]["post"])
+                                                    .update({"dislike": value});
+                                              });
+
+
+                                            }else
+                                            {
+                                              Fluttertoast.showToast(
+                                                msg: 'You already dislike this post',
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.TOP,
+                                                backgroundColor: Colors.orange,
+                                                textColor: Colors.black,
+                                              );
+
+                                            }
+                                          },
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                            child: Container(
+                                              height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                                  0.04,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                                  0.1,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                  BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                      width: 0.1,
+                                                      color: Colors.grey)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: [
+
+
+                                                  Icon(CupertinoIcons
+                                                      .hand_thumbsdown,size: 20,),
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(left: 3),
+                                                    child: Text(
+                                                      snapshot
+                                                          .data!.docs[index]["dislike"]
+                                                          .toString(),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                           onTap: (){
+                                             share();
+                                               sharetext=snapshot.data!.docs[index]["description"];
+                                           },
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 8.0),
+                                            child: Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.04,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.1,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                      width: 0.1,
+                                                      color: Colors.grey)),
+                                              child: Icon(Icons.share),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+          ),
         ),
       ),
     );
