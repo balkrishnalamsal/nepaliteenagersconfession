@@ -94,14 +94,14 @@ class _CreatePostState extends State<CreatePost> {
                                       .set({
                                     "description": squadcontroller!.text,
                                     "post": post,
-                                    "status": "Pending",
+                                    "status": "Approved",
                                     "Time": DateTime.now(),
                                     "like":0,
                                     "dislike":0
 
                                   }).whenComplete(() {
                                     setState(() {
-                                      Fluttertoast.showToast(msg: 'Successfully sent for approval',
+                                      Fluttertoast.showToast(msg: 'Successfully Uploaded',
                                         toastLength: Toast.LENGTH_LONG,
                                         gravity: ToastGravity.BOTTOM,
                                         backgroundColor: Colors.orange,
@@ -115,7 +115,7 @@ class _CreatePostState extends State<CreatePost> {
                                   });
                                 },
                                 child: Text(
-                                  "Send for Approval",
+                                  "POST",
                                   style: TextStyle(
                                       fontWeight: FontWeight.normal,
                                       color: Colors.white),
@@ -143,7 +143,7 @@ class _CreatePostState extends State<CreatePost> {
                 Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: Text(
-                      "Note: Your confession will be posted as soon as admin approved the post"),
+                      "Note: Your confession will be deleted if your confession doesn't meet terms and conditions"),
                 )
               ],
             ),

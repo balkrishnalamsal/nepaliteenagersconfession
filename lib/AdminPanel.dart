@@ -112,7 +112,7 @@ class _AdminpanelState extends State<Adminpanel> {
                   .collection("Confession")
                   .orderBy("Time", descending: true)
                   .where(
-                    "status",isEqualTo: "Pending"
+                    "status",isEqualTo: "Approved"
                   )
                   .snapshots()
                   .asBroadcastStream(),

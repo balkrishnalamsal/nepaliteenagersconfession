@@ -409,7 +409,7 @@ shared()async{
                                             }else
                                             {
                                               Fluttertoast.showToast(
-                                                msg: 'You already dislike this post',
+                                                msg: 'You already love this post',
                                                 toastLength: Toast.LENGTH_SHORT,
                                                 gravity: ToastGravity.TOP,
                                                 backgroundColor: Colors.orange,
@@ -443,7 +443,7 @@ shared()async{
 
 
                                                   Icon(CupertinoIcons
-                                                      .hand_thumbsdown,size: 20,),
+                                                      .heart,size: 20,color: Colors.red,),
                                                   Padding(
                                                     padding: const EdgeInsets.only(left: 3),
                                                     child: Text(
